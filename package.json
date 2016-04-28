@@ -13,7 +13,7 @@
     "build-umd": "NODE_ENV=production webpack modules/RelativeLinks.js umd/RelativeLinks.js",
     "build-min": "NODE_ENV=production webpack -p modules/RelativeLinks.js umd/RelativeLinks.min.js",
     "lint": "eslint modules",
-    "start": "webpack --config example/webpack.config.js && http-server example",
+    "start": "webpack-dev-server --config example/webpack.config.js --inline --content-base example",
     "test": "npm run lint && karma start"
   },
   "authors": [

@@ -1,4 +1,3 @@
-/*eslint no-console: 0*/
 import React from 'react'
 import { findDOMNode } from 'react-dom'
 
@@ -28,11 +27,9 @@ const RestoreScrollContainer = React.createClass({
   getChildContext() {
     return { restoreScroll: {
       registerScroller: (scrollKey, component) => {
-        console.log('registerScroller', scrollKey)
         this.scrollers[scrollKey] = component
       },
       unregisterScroller: (scrollKey) => {
-        console.log('unregisterScroller', scrollKey)
         delete this.scrollers[scrollKey]
       },
       getPosition: this.getPosition
@@ -53,7 +50,6 @@ const RestoreScrollContainer = React.createClass({
   },
 
   componentWillReceiveProps(nextProps) {
-    console.log('componentWillReceiveProps')
     if (nextProps.location !== this.props.location) {
       this.saveScrollerPositions()
     }
@@ -67,12 +63,10 @@ const RestoreScrollContainer = React.createClass({
   },
 
   savePosition(scrollKey, position) {
-    console.log('savePosition', scrollKey, position)
     this.positionsByLocation[this.props.location.key][scrollKey] = position
   },
 
   saveScrollerPositions() {
-    console.log('saveScrollerPositions')
     const { positionsByLocation, scrollers } = this
     const { key } = this.props.location
 

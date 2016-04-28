@@ -27,9 +27,9 @@ const Index = React.createClass({
         <h2>Index</h2>
         <RestoreScroll scrollKey="one">
           <div style={{ height: '200px', overflow: 'auto', border: '1px solid' }}>
-            <p style={{ height: '100px' }}>scroll me</p>
-            <p style={{ height: '100px' }}>two</p>
-            <p style={{ height: '100px' }}>three</p>
+            <div style={{ height: '100px', background: 'hsl(0, 50%, 90%)' }}>scroll me</div>
+            <div style={{ height: '100px', background: 'hsl(100, 50%, 90%)' }}>two</div>
+            <div style={{ height: '100px', background: 'hsl(200, 50%, 90%)' }}>three</div>
           </div>
         </RestoreScroll>
       </div>
@@ -43,10 +43,10 @@ const Page = React.createClass({
     return (
       <div>
         <h2>Chapter {page}</h2>
-        <p style={{ height: '50vh' }}>scroll down</p>
-        <p style={{ height: '50vh' }}>one</p>
-        <p style={{ height: '50vh' }}>two</p>
-        <p style={{ height: '50vh' }}>click the back button</p>
+        <div style={{ height: '50vh', background: 'hsl(0, 50%, 90%)' }}>scroll down</div>
+        <div style={{ height: '50vh', background: 'hsl(100, 50%, 90%)' }}>one</div>
+        <div style={{ height: '50vh', background: 'hsl(200, 50%, 90%)' }}>two</div>
+        <div style={{ height: '50vh', background: 'hsl(300, 50%, 90%)' }}>click the back button</div>
       </div>
     )
   }

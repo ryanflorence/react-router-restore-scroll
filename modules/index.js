@@ -2,8 +2,10 @@ import React from 'react'
 import { findDOMNode } from 'react-dom'
 import parsePath from 'history/lib/parsePath'
 
-if (typeof window !== 'undefined' && 'scrollRestoration' in window.history) {
-  history.scrollRestoration = 'manual'
+const setManualScroll = () => {
+  if (typeof window !== 'undefined' && 'scrollRestoration' in window.history) {
+    history.scrollRestoration = 'manual'
+  }
 }
 
 const createKey = () => (
@@ -19,36 +21,17 @@ const addScrollKey = (locationOrString) => {
   return location
 }
 
-export const useRouterRestoreScroll = () => ({
-  renderRouterContext: (child, props) => (
-    <RestoreWindowScroll
-      router={props.router}
-      location={props.location}
-      children={child}
-    />
-  )
-})
-
 const RestoreWindowScroll = React.createClass({
 
   propTypes: {
-    router: React.PropTypes.object.isRequired,
+    restoreScrollPosition: React.PropTypes.func.isRequired,
     location: React.PropTypes.object.isRequired
   },
 
   componentDidUpdate(prevProps) {
     const { location } = this.props
     if (prevProps.location !== this.props.location) {
-      if (location.action === 'PUSH' || location.action === 'REPLACE') {
-        window.scrollTo(0, 0)
-      } else {
-        const { getScrollerPosition } = this.props.router.restoreScroll
-        const position = getScrollerPosition('window')
-        if (position) {
-          const { scrollX, scrollY } = position
-          window.scrollTo(scrollX, scrollY)
-        }
-      }
+      this.props.restoreScrollPosition('window', location)
     }
   },
 
@@ -57,13 +40,53 @@ const RestoreWindowScroll = React.createClass({
   }
 })
 
-export const useHistoryRestoreScroll = (createHistory) => (
+const RestoreScroll = React.createClass({
+
+  contextTypes: {
+    router: React.PropTypes.object.isRequired
+  },
+
+  propTypes: {
+    scrollKey: React.PropTypes.string.isRequired
+  },
+
+  componentDidMount() {
+    const { registerScroller } = this.context.router.restoreScroll
+    const { scrollKey } = this.props
+    registerScroller(scrollKey, findDOMNode(this))
+    this.restoreScrollPosition()
+  },
+
+  componentWillUnmount() {
+    const { unregisterScroller } = this.context.router.restoreScroll
+    const { scrollKey } = this.props
+    unregisterScroller(scrollKey)
+  },
+
+  restoreScrollPosition() {
+    const { restoreScrollPosition } = this.context.router.restoreScroll
+    restoreScrollPosition(this.props.scrollKey)
+  },
+
+  render() {
+    return React.Children.only(this.props.children)
+  }
+
+})
+
+const useHistoryRestoreScroll = (createHistory) => (
   (options={}) => {
+    setManualScroll()
+
     const initialScrollKey = createKey()
     let currentScrollKey = null
 
     const history = createHistory(options)
 
+    ////
+    // `positionsByLocation` looks like this
+    //
+    // ```
     // {
     //   [location.key]: {
     //     window: { scrollX, scrollY },
@@ -71,6 +94,7 @@ export const useHistoryRestoreScroll = (createHistory) => (
     //   },
     //   [location.key]: etc...
     // }
+    // ```
     const positionsByLocation = {}
     const scrollers = {}
 
@@ -84,8 +108,8 @@ export const useHistoryRestoreScroll = (createHistory) => (
       history.replace(location)
     }
 
-    const registerScroller = (scrollKey, component) => {
-      scrollers[scrollKey] = component
+    const registerScroller = (scrollKey, node) => {
+      scrollers[scrollKey] = node
     }
 
     const unregisterScroller = (scrollKey) => {
@@ -103,8 +127,8 @@ export const useHistoryRestoreScroll = (createHistory) => (
       const { scrollY, scrollX } = window
       savePosition('window', { scrollX, scrollY })
       for (const scrollKey in scrollers) {
-        const scrollerComponent = scrollers[scrollKey]
-        const { scrollTop, scrollLeft } = findDOMNode(scrollerComponent)
+        const scrollerNode = scrollers[scrollKey]
+        const { scrollTop, scrollLeft } = scrollerNode
         savePosition(scrollKey, { scrollTop, scrollLeft })
       }
     }
@@ -125,6 +149,36 @@ export const useHistoryRestoreScroll = (createHistory) => (
       return () => unlisten() && internalUnlisten()
     }
 
+    const restoreWindow = (location) => {
+      if (location.action === 'PUSH' || location.action === 'REPLACE') {
+        window.scrollTo(0, 0)
+      } else {
+        const position = getScrollerPosition('window')
+        if (position) {
+          const { scrollX, scrollY } = position
+          window.scrollTo(scrollX, scrollY)
+        }
+      }
+    }
+
+    const restoreNode = (scrollKey) => {
+      const position = getScrollerPosition(scrollKey)
+      if (position) {
+        const node = scrollers[scrollKey]
+        const { scrollTop, scrollLeft } = position
+        node.scrollTop = scrollTop
+        node.scrollLeft = scrollLeft
+      }
+    }
+
+    const restoreScrollPosition = (key, location) => {
+      if (key === 'window') {
+        restoreWindow(location)
+      } else {
+        restoreNode(key)
+      }
+    }
+
     return {
       ...history,
       listen,
@@ -133,50 +187,26 @@ export const useHistoryRestoreScroll = (createHistory) => (
       restoreScroll: {
         registerScroller,
         unregisterScroller,
-        getScrollerPosition
+        getScrollerPosition,
+        restoreScrollPosition
       }
     }
   }
 )
 
-export const RestoreScroll = React.createClass({
-
-  contextTypes: {
-    router: React.PropTypes.object.isRequired
-  },
-
-  propTypes: {
-    scrollKey: React.PropTypes.string.isRequired
-  },
-
-  componentDidMount() {
-    const { registerScroller } = this.context.router.restoreScroll
-    const { scrollKey } = this.props
-    registerScroller(scrollKey, this)
-    this.restoreScrollPosition()
-  },
-
-  componentWillUnmount() {
-    const { unregisterScroller } = this.context.router.restoreScroll
-    const { scrollKey } = this.props
-    unregisterScroller(scrollKey)
-  },
-
-  restoreScrollPosition() {
-    const { scrollKey } = this.props
-    const { getScrollerPosition } = this.context.router.restoreScroll
-    const position = getScrollerPosition(scrollKey)
-    if (position) {
-      const node = findDOMNode(this)
-      const { scrollTop, scrollLeft } = position
-      node.scrollTop = scrollTop
-      node.scrollLeft = scrollLeft
-    }
-  },
-
-  render() {
-    return React.Children.only(this.props.children)
-  }
-
+const useRouterRestoreScroll = () => ({
+  renderRouterContext: (child, props) => (
+    <RestoreWindowScroll
+      restoreScrollPosition={props.router.restoreScroll.restoreScrollPosition}
+      location={props.location}
+      children={child}
+    />
+  )
 })
+
+export {
+  useHistoryRestoreScroll,
+  useRouterRestoreScroll,
+  RestoreScroll
+}
 

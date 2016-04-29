@@ -23,25 +23,26 @@ const useHistoryRestoreScroll = (createHistory) => (
   (options={}) => {
     setManualScroll()
 
-    const initialScrollKey = createKey()
-    let currentScrollKey = null
+    const scrollers = {}
+
+    const positionsByLocation = (
+      sessionStorage.positionsByLocation && (
+        JSON.parse(sessionStorage.positionsByLocation)
+      )
+    ) || {}
+
+    const initialScrollKey = sessionStorage.initialScrollKey || createKey()
+    let currentScrollKey = sessionStorage.currentScrollKey || initialScrollKey
+    let first = true
+
+    window.onbeforeunload = () => {
+      saveScrollPositions()
+      sessionStorage.positionsByLocation = JSON.stringify(positionsByLocation)
+      sessionStorage.currentScrollKey = currentScrollKey
+      sessionStorage.initialScrollKey = initialScrollKey
+    }
 
     const history = createHistory(options)
-
-    ////
-    // `positionsByLocation` looks like this
-    //
-    // ```
-    // {
-    //   [currentScrollKey]: {
-    //     window: { scrollX, scrollY },
-    //     [scrollKey]: { scrollTop, scrollLeft }
-    //   },
-    //   [currentScrollKey]: etc...
-    // }
-    // ```
-    const positionsByLocation = {}
-    const scrollers = {}
 
     const push = (locationWithoutKey) => {
       const location = addScrollKey(locationWithoutKey)
@@ -67,7 +68,7 @@ const useHistoryRestoreScroll = (createHistory) => (
       return locationPositions ? locationPositions[componentScrollKey] || null : null
     }
 
-    const saveScrollerPositions = () => {
+    const saveScrollPositions = () => {
       if (!positionsByLocation[currentScrollKey])
         positionsByLocation[currentScrollKey] = {}
       const { scrollY, scrollX } = window
@@ -106,7 +107,11 @@ const useHistoryRestoreScroll = (createHistory) => (
     }
 
     const unlisten = history.listen((location) => {
-      saveScrollerPositions()
+      if (first) {
+        first = false
+      } else {
+        saveScrollPositions()
+      }
       currentScrollKey = (
         location.state && location.state.__scrollKey
       ) || initialScrollKey

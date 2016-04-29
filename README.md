@@ -74,6 +74,7 @@ integrate into any view layer that uses `history` (cycle.js, etc.).
 
 ```js
 import createBrowserHistory from 'history/lib/createBrowserHistory'
+import useHistoryRestoreScroll from 'react-router-restore-scroll/lib/useHistoryRestoreScroll'
 
 const history = useHistoryRestoreScroll(createBrowserHistory)()
 
@@ -92,6 +93,10 @@ history.restoreScroll.restoreWindow()
 
 You can look at `modules/RestoreWindowScroll.js` and `modules/RestoreScroll.js`
 to see at which points in a React app these methods are all called.
+
+We'll pull `useHistoryRestoreScroll` out into it's own package on npm
+eventually so that this use-case isn't required to bring in stuff that
+depends on React and React Router.
 
 ## Difference from [taion/scroll-behavior](https://github.com/taion/scroll-behavior)
 

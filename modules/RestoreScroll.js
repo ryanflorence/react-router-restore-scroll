@@ -13,21 +13,14 @@ const RestoreScroll = React.createClass({
 
   componentDidMount() {
     const { registerScroller } = this.context.router.restoreScroll
-    const { scrollKey } = this.props
-    registerScroller(scrollKey, findDOMNode(this))
-    this.restoreScrollPosition()
+    registerScroller(this.props.scrollKey, findDOMNode(this))
   },
 
   componentWillUnmount() {
     const { unregisterScroller } = this.context.router.restoreScroll
-    const { scrollKey } = this.props
-    unregisterScroller(scrollKey)
+    unregisterScroller(this.props.scrollKey)
   },
 
-  restoreScrollPosition() {
-    const { restoreScrollPosition } = this.context.router.restoreScroll
-    restoreScrollPosition(this.props.scrollKey)
-  },
 
   render() {
     return React.Children.only(this.props.children)

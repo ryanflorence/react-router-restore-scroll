@@ -55,6 +55,7 @@ const useHistoryRestoreScroll = (createHistory) => (
 
     const registerScroller = (scrollKey, node) => {
       scrollers[scrollKey] = node
+      restoreNode(scrollKey)
     }
 
     const unregisterScroller = (scrollKey) => {
@@ -82,18 +83,6 @@ const useHistoryRestoreScroll = (createHistory) => (
       positionsByLocation[currentScrollKey][scrollKey] = position
     }
 
-    const unlisten = history.listen((location) => {
-      saveScrollerPositions()
-      currentScrollKey = (
-        location.state && location.state.__scrollKey
-      ) || initialScrollKey
-    })
-
-    const listen = (...args) => {
-      const internalUnlisten = history.listen(...args)
-      return () => unlisten() && internalUnlisten()
-    }
-
     const restoreWindow = (location) => {
       if (location.action === 'PUSH' || location.action === 'REPLACE') {
         window.scrollTo(0, 0)
@@ -116,12 +105,16 @@ const useHistoryRestoreScroll = (createHistory) => (
       }
     }
 
-    const restoreScrollPosition = (key, location) => {
-      if (key === 'window') {
-        restoreWindow(location)
-      } else {
-        restoreNode(key)
-      }
+    const unlisten = history.listen((location) => {
+      saveScrollerPositions()
+      currentScrollKey = (
+        location.state && location.state.__scrollKey
+      ) || initialScrollKey
+    })
+
+    const listen = (...args) => {
+      const internalUnlisten = history.listen(...args)
+      return () => unlisten() && internalUnlisten()
     }
 
     return {
@@ -132,8 +125,7 @@ const useHistoryRestoreScroll = (createHistory) => (
       restoreScroll: {
         registerScroller,
         unregisterScroller,
-        getScrollerPosition,
-        restoreScrollPosition
+        restoreWindow
       }
     }
   }

@@ -4,7 +4,7 @@ import RestoreWindowScroll from './RestoreWindowScroll'
 const useRouterRestoreScroll = () => ({
   renderRouterContext: (child, props) => (
     <RestoreWindowScroll
-      restoreScrollPosition={props.router.restoreScroll.restoreScrollPosition}
+      restoreWindow={props.router.restoreScroll.restoreWindow}
       location={props.location}
       children={child}
     />

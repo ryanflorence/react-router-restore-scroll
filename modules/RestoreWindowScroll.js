@@ -3,14 +3,14 @@ import React from 'react'
 const RestoreWindowScroll = React.createClass({
 
   propTypes: {
-    restoreScrollPosition: React.PropTypes.func.isRequired,
+    restoreWindow: React.PropTypes.func.isRequired,
     location: React.PropTypes.object.isRequired
   },
 
   componentDidUpdate(prevProps) {
     const { location } = this.props
     if (prevProps.location !== this.props.location) {
-      this.props.restoreScrollPosition('window', location)
+      this.props.restoreWindow(location)
     }
   },
 

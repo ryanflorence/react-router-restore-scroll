@@ -1,8 +1,12 @@
 import React from 'react'
-import { render, findDOMNode } from 'react-dom'
+import { render } from 'react-dom'
 import { Router, Route, IndexRoute, browserHistory, Link } from 'react-router'
-import applyMiddleware from 'react-router-apply-middleware'
-import { useRestoreScroll, RestoreScroll } from 'react-router-restore-scroll'
+import applyRouterMiddleware from 'react-router/lib/applyRouterMiddleware'
+import {
+  useHistoryRestoreScroll,
+  useRouterRestoreScroll,
+  RestoreScroll
+} from 'react-router-restore-scroll'
 
 const App = React.createClass({
   render() {
@@ -61,8 +65,8 @@ const routes = (
 
 render(
   <Router
-    render={applyMiddleware(useRestoreScroll())}
-    history={browserHistory}
+    history={useHistoryRestoreScroll(() => browserHistory)()}
+    render={applyRouterMiddleware(useRouterRestoreScroll())}
     routes={routes}
   />,
   document.getElementById('app')

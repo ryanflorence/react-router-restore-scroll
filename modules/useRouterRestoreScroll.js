@@ -1,7 +1,4 @@
 import React from 'react'
-
-// getting that dumb warning even though it's used in the JSX!
-/*eslint no-unused-vars: 0 */
 import RestoreWindowScroll from './RestoreWindowScroll'
 
 const useRouterRestoreScroll = () => ({

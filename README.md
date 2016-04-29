@@ -79,15 +79,15 @@ const history = useHistoryRestoreScroll(createBrowserHistory)()
 
 // call this when a scrollable element is inserted into the dom, where
 // `scrollKey` is a globally unique identifier for the node
-history.registerScroller(scrollKey, domNode)
+history.restoreScroll.registerScroller(scrollKey, domNode)
 
 // call this when it's removed from the dom
-history.unregisterScroller(scrollKey)
+history.restoreScroll.unregisterScroller(scrollKey)
 
 // call this
 // - when the app first renders
 // - after the app re-renders after a location change
-history.restoreWindow()
+history.restoreScroll.restoreWindow()
 ```
 
 You can look at `modules/RestoreWindowScroll.js` and `modules/RestoreScroll.js`

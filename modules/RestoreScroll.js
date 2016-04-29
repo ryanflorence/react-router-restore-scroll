@@ -21,7 +21,6 @@ const RestoreScroll = React.createClass({
     unregisterScroller(this.props.scrollKey)
   },
 
-
   render() {
     return React.Children.only(this.props.children)
   }

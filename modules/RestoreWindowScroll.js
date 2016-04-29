@@ -8,15 +8,14 @@ const RestoreWindowScroll = React.createClass({
   },
 
   componentDidUpdate(prevProps) {
-    const { location } = this.props
-    if (prevProps.location !== this.props.location) {
-      this.props.restoreWindow(location)
-    }
+    if (prevProps.location !== this.props.location)
+      this.props.restoreWindow(this.props.location)
   },
 
   render() {
-    return this.props.children
+    return React.Children.only(this.props.children)
   }
+
 })
 
 export default RestoreWindowScroll

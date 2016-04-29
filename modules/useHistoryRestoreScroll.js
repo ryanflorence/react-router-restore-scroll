@@ -33,11 +33,11 @@ const useHistoryRestoreScroll = (createHistory) => (
     //
     // ```
     // {
-    //   [location.key]: {
+    //   [currentScrollKey]: {
     //     window: { scrollX, scrollY },
     //     [scrollKey]: { scrollTop, scrollLeft }
     //   },
-    //   [location.key]: etc...
+    //   [currentScrollKey]: etc...
     // }
     // ```
     const positionsByLocation = {}

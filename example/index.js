@@ -17,6 +17,7 @@ const App = React.createClass({
           <li><Link to="/">Index</Link></li>
           <li><Link to="/page/1">Page 1</Link></li>
           <li><Link to="/page/2">Page 2</Link></li>
+          <li><a href="https://example.com">external</a></li>
         </ul>
         {this.props.children}
       </div>
@@ -31,9 +32,8 @@ const Index = React.createClass({
         <h2>Index</h2>
         <RestoreScroll scrollKey="one">
           <div style={{ height: '200px', overflow: 'auto', border: '1px solid' }}>
-            <div style={{ height: '100px', background: 'hsl(0, 50%, 90%)' }}>scroll me</div>
-            <div style={{ height: '100px', background: 'hsl(100, 50%, 90%)' }}>two</div>
-            <div style={{ height: '100px', background: 'hsl(200, 50%, 90%)' }}>three</div>
+            <div style={{ height: '200px', background: 'hsl(0, 50%, 90%)' }}>scroll me</div>
+            <div style={{ height: '200px', background: 'hsl(100, 50%, 90%)' }}>two</div>
           </div>
         </RestoreScroll>
       </div>

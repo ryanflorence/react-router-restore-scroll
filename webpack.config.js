@@ -1,7 +1,7 @@
 module.exports = {
 
   output: {
-    library: 'RelativeLinks',
+    library: 'RestoreScroll',
     libraryTarget: 'umd'
   },
 

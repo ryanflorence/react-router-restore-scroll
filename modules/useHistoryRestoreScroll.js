@@ -1,4 +1,4 @@
-import parsePath from 'history/lib/parsePath'
+import { parsePath } from 'history/lib/PathUtils'
 
 const setManualScroll = () => {
   if (typeof window !== 'undefined' && 'scrollRestoration' in window.history) {

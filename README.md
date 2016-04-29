@@ -11,6 +11,12 @@ Plan is to put this into React Router directly, but for now you can plug
 it in and help us get the bugs out (and write some tests, there aren't
 any yet!)
 
+## Installation
+
+```sh
+npm install react-router-restore-scroll
+```
+
 ## Usage
 
 ```js

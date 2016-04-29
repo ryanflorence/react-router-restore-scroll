@@ -93,3 +93,14 @@ history.restoreWindow()
 You can look at `modules/RestoreWindowScroll.js` and `modules/RestoreScroll.js`
 to see at which points in a React app these methods are all called.
 
+## Difference from [taion/scroll-behavior](https://github.com/taion/scroll-behavior)
+
+- It ties into the router middleware to decide when to restore scroll
+  positions so we don't need workarounds for async routes
+- It restores scroll position of individual elements in addition to the
+  window.
+- It doesn't rely on `location.key` in preparation for history 3.0
+- It does not have `shouldUpdateScroll`, but once [route is on
+  context](https://github.com/reactjs/react-router/issues/3325) we'll be
+able to implement [the old `ignoreScroll` route prop](https://github.com/gaearon/react-router/blob/edfe32086fe9373fe9653b0ef0aaec544eecd3d5/docs/api/components/Route.md#ignorescrollbehavior) or maybe a function like `shouldUpdateScroll` instead.
+

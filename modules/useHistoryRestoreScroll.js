@@ -23,8 +23,9 @@ const useHistoryRestoreScroll = (createHistory) => (
   (options={}) => {
     setManualScroll()
 
-    const scrollers = {}
+    const scrollableNodes = {}
 
+    // TODO: safer sessionStorage stuff
     const positionsByLocation = (
       sessionStorage.positionsByLocation && (
         JSON.parse(sessionStorage.positionsByLocation)
@@ -35,12 +36,12 @@ const useHistoryRestoreScroll = (createHistory) => (
     let currentScrollKey = sessionStorage.currentScrollKey || initialScrollKey
     let first = true
 
-    window.onbeforeunload = () => {
+    window.addEventListener('beforeunload', () => {
       saveScrollPositions()
       sessionStorage.positionsByLocation = JSON.stringify(positionsByLocation)
       sessionStorage.currentScrollKey = currentScrollKey
       sessionStorage.initialScrollKey = initialScrollKey
-    }
+    })
 
     const history = createHistory(options)
 
@@ -55,12 +56,12 @@ const useHistoryRestoreScroll = (createHistory) => (
     }
 
     const registerScroller = (scrollKey, node) => {
-      scrollers[scrollKey] = node
+      scrollableNodes[scrollKey] = node
       restoreNode(scrollKey)
     }
 
     const unregisterScroller = (scrollKey) => {
-      delete scrollers[scrollKey]
+      delete scrollableNodes[scrollKey]
     }
 
     const getScrollerPosition = (componentScrollKey) => {
@@ -73,8 +74,8 @@ const useHistoryRestoreScroll = (createHistory) => (
         positionsByLocation[currentScrollKey] = {}
       const { scrollY, scrollX } = window
       savePosition('window', { scrollX, scrollY })
-      for (const scrollKey in scrollers) {
-        const scrollerNode = scrollers[scrollKey]
+      for (const scrollKey in scrollableNodes) {
+        const scrollerNode = scrollableNodes[scrollKey]
         const { scrollTop, scrollLeft } = scrollerNode
         savePosition(scrollKey, { scrollTop, scrollLeft })
       }
@@ -99,7 +100,7 @@ const useHistoryRestoreScroll = (createHistory) => (
     const restoreNode = (scrollKey) => {
       const position = getScrollerPosition(scrollKey)
       if (position) {
-        const node = scrollers[scrollKey]
+        const node = scrollableNodes[scrollKey]
         const { scrollTop, scrollLeft } = position
         node.scrollTop = scrollTop
         node.scrollLeft = scrollLeft

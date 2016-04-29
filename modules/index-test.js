@@ -1,5 +1,10 @@
 /*eslint-env mocha*/
+import expect from 'expect'
+
 describe('useHistoryRestoreScroll', () => {
+  it('exits correctly', () => {
+    expect(true).toBe(true)
+  })
   describe('intial history entry', () => {
     it('restores window scroll when going back to it')
     it('restores window scroll when going back from a different domain')

@@ -5,9 +5,9 @@
   "main": "lib/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ryanflorence/react-router-relative-links.git"
+    "url": "https://github.com/ryanflorence/react-router-restore-scroll.git"
   },
-  "bugs": "https://github.com/ryanflorence/react-router-relative-links/issues",
+  "bugs": "https://github.com/ryanflorence/react-router-restore-scroll/issues",
   "scripts": {
     "build": "babel ./modules -d lib --ignore '__tests__'",
     "build-umd": "NODE_ENV=production webpack modules/RestoreScroll.js umd/RestoreScroll.js",

@@ -1,3 +1,25 @@
+# Updates for this fork
+
+This is a fork of [ryanflorence/react-router-restore-scroll](https://github.com/ryanflorence/react-router-restore-scroll).
+
+The above library seems to be unmaintained so I forked it to support React v16 and fix some other minor issues.
+
+I recommend using node v8.1.2 and the latest npm version in order to use this version, and to use react-router@3.
+
+## Major differences:
+1. Removed deprecated usages of React in order to support React v16. (TODO)
+2. Fixed this repo to directly allow installation with npm.
+3. Fixed wrong link in ```package.json```
+
+## How to use:
+Add the following in your ```package.json```
+```javascript
+...
+"react-router-restore-scroll": "git+https://github.com/jshin49/react-router-restore-scroll.git",
+...
+```
+
+
 # Restore Scroll
 
 Restore the scroll positions of `window` and scrollable elements when

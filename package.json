@@ -13,7 +13,7 @@
     "build-umd": "NODE_ENV=production webpack modules/RestoreScroll.js umd/RestoreScroll.js",
     "build-min": "NODE_ENV=production webpack -p modules/RestoreScroll.js umd/RestoreScroll.min.js",
     "lint": "eslint modules",
-    "postinstall": "npm-scripts/postinstall.js",
+    "postinstall": "node npm-scripts/postinstall.js",
     "start": "webpack-dev-server --config example/webpack.config.js --inline --content-base example",
     "test": "npm run lint && karma start"
   },

@@ -36,6 +36,10 @@ const RestoreScroll = createReactClass({
 )}
 ```
 
+Referring to 
+- https://facebook.github.io/react/blog/2017/04/07/react-v15.5.0.html#migrating-from-react.createclass
+- https://facebook.github.io/react/blog/2017/04/07/react-v15.5.0.html#migrating-from-react.proptypes
+
 2. Fixed this repo to directly allow installation with npm.
 3. Fixed wrong link in ```package.json```
 

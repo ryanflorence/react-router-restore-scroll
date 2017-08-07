@@ -1,6 +1,7 @@
 import React from 'react'
+import createReactClass from 'create-react-class'
 
-const RestoreWindowScroll = React.createClass({
+const RestoreWindowScroll = createReactClass({
 
   propTypes: {
     restoreWindow: React.PropTypes.func.isRequired,
@@ -23,4 +24,3 @@ const RestoreWindowScroll = React.createClass({
 })
 
 export default RestoreWindowScroll
-

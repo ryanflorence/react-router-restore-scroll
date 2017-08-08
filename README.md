@@ -42,6 +42,8 @@ Referring to
 
 2. Fixed this repo to directly allow installation with npm.
 3. Fixed wrong link in ```package.json```
+4. Fixed not restoring scroll for the first ```POP``` action.
+5. Only save scroll position when ```PUSH``` or ```REPLACE``` action.
 
 ## How to use:
 Add the following in your ```package.json```

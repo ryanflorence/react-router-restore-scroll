@@ -1,3 +1,59 @@
+# Updates for this fork
+
+This is a fork of [ryanflorence/react-router-restore-scroll](https://github.com/ryanflorence/react-router-restore-scroll).
+
+The above library seems to be unmaintained so I forked it to support React v16 and fix some other minor issues.
+
+I recommend using node v8.1.2 and the latest npm version in order to use this version, and to use react-router@3.
+
+## Major differences:
+1. Removed deprecated usages of React.createClass and React.PropTypes in order to support React v16.
+- Before
+```javascript
+import React from 'react'
+
+const RestoreScroll = React.createClass({
+...
+  propTypes: {
+    scrollKey: React.PropTypes.string.isRequired
+  },
+...
+)}
+```
+
+- After
+```javascript
+import React from 'react'
+import PropTypes from 'prop-types'
+import createReactClass from 'create-react-class'
+
+const RestoreScroll = createReactClass({
+...
+  propTypes: {
+    scrollKey: PropTypes.string.isRequired
+  },
+...
+)}
+```
+
+Referring to 
+- https://facebook.github.io/react/blog/2017/04/07/react-v15.5.0.html#migrating-from-react.createclass
+- https://facebook.github.io/react/blog/2017/04/07/react-v15.5.0.html#migrating-from-react.proptypes
+
+2. Fixed this repo to directly allow installation with npm.
+3. Fixed wrong link in ```package.json```
+4. Fixed not restoring scroll for the first ```POP``` action.
+5. Only save scroll position when ```PUSH``` or ```REPLACE``` action.
+
+## How to use:
+Add the following in your ```package.json```
+```javascript
+...
+"react-router-restore-scroll": "git+https://github.com/jshin49/react-router-restore-scroll.git",
+...
+```
+
+
 # Restore Scroll
 
 Restore the scroll positions of `window` and scrollable elements when

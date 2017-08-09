@@ -34,7 +34,6 @@ const useHistoryRestoreScroll = (createHistory) => (
 
     const initialScrollKey = sessionStorage.initialScrollKey || createKey()
     let currentScrollKey = sessionStorage.currentScrollKey || initialScrollKey
-    let first = true
 
     window.addEventListener('beforeunload', () => {
       saveScrollPositions()
@@ -108,9 +107,7 @@ const useHistoryRestoreScroll = (createHistory) => (
     }
 
     const unlisten = history.listen((location) => {
-      if (first) {
-        first = false
-      } else {
+      if (location.action === 'PUSH' || location.action === 'REPLACE') {
         saveScrollPositions()
       }
       currentScrollKey = (
@@ -138,4 +135,3 @@ const useHistoryRestoreScroll = (createHistory) => (
 )
 
 export default useHistoryRestoreScroll
-

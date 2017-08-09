@@ -1,14 +1,16 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+import createReactClass from 'create-react-class'
 import { findDOMNode } from 'react-dom'
 
-const RestoreScroll = React.createClass({
+const RestoreScroll = createReactClass({
 
   contextTypes: {
-    router: React.PropTypes.object.isRequired
+    router: PropTypes.object.isRequired
   },
 
   propTypes: {
-    scrollKey: React.PropTypes.string.isRequired
+    scrollKey: PropTypes.string.isRequired
   },
 
   componentDidMount() {
@@ -28,4 +30,3 @@ const RestoreScroll = React.createClass({
 })
 
 export default RestoreScroll
-
